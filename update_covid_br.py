@@ -1,7 +1,7 @@
 import os
 import csv
 import json
-import xlrd
+import pandas as pd
 import requests
 import mysql.connector
 
@@ -16,6 +16,7 @@ def get_current_data_url():
     req = requests.get(url, params=params)
     url_content = req.content.decode()
     result = json.loads(url_content)
+    print('URL retorned')
     return result["results"][0]["arquivo"]["url"]
 
 
@@ -28,18 +29,13 @@ def get_xlsx_from_url(output_path: str):
     xlsx_file = open(output_path, 'wb')
     xlsx_file.write(url_content)
     xlsx_file.close()
+    print('XLSX file saved')
 
 
 def xlsx_to_csv(xlsx_path:str, output_path: str):
-    wordbook = xlrd.open_workbook(xlsx_path)
-    sheet = wordbook.sheet_by_name('Sheet 1')
-    csv_file = open(output_path, 'w')
-    writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
-
-    for rownum in range(sheet.nrows):
-        writer.writerow(sheet.row_values(rownum))
-
-    csv_file.close()
+    xls_file = pd.read_excel(xlsx_path, sheet_name="Sheet 1")
+    xls_file.to_csv(output_path, index = False)
+    print('CSV file saved')
 
 
 def full_ibge_code(cod6: str):
@@ -88,10 +84,10 @@ def insert_csv_into_db(csv_path: str):
             print("Current: " + str(reader.line_num))
             ibge_cod = full_ibge_code(row[4][:6])
             date = row[7]
-            total_cases = row[10]
-            total_deaths = row[12]
+            total_cases = int(row[10])
+            total_deaths = int(row[12])
 
-            if date > last_date and int(total_cases) > 0:
+            if date > last_date and total_cases > 0:
                 print("Updating line number: " + str(reader.line_num))
                 val = (total_cases, total_deaths, date, ibge_cod)
                 cursor.execute(insert_sql, val)
