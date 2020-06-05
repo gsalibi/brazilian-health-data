@@ -31,7 +31,7 @@ jobs:
       env:
         SUPER_SECRET: ${{ secrets.SuperSecret }}
       run: |
-        python update_covid_br
+        python update_covid_br.py
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
