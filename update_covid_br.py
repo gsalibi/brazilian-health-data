@@ -1,9 +1,9 @@
 import os
 import csv
 import json
-import pandas as pd
 import requests
 import mysql.connector
+import pandas as pd
 
 
 def get_current_data_url():
@@ -36,6 +36,7 @@ def xlsx_to_csv(xlsx_path:str, output_path: str):
     xls_file = pd.read_excel(xlsx_path, sheet_name="Sheet 1")
     xls_file.to_csv(output_path, index = False)
     print('CSV file saved')
+    os.remove(xlsx_path)
 
 
 def full_ibge_code(cod6: str):
