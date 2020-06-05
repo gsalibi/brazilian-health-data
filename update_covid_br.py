@@ -103,6 +103,6 @@ def insert_csv_into_db(csv_path: str):
     mydb.commit()
 
 
-get_xlsx_from_url('data/covid_br.xlsx')
-xlsx_to_csv('data/covid_br.xlsx', 'data/covid_br.csv')
-insert_csv_into_db('data/covid_br.csv')
+get_xlsx_from_url('./data/covid_br.xlsx')
+xlsx_to_csv('./data/covid_br.xlsx', 'data/covid_br.csv')
+insert_csv_into_db('./data/covid_br.csv')
