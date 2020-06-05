@@ -20,7 +20,7 @@ def fullIBGE(cod6: str):
 
 def convert_to_css(url: str, output_name: str):
     source = requests.get(url).text
-    soup = BeautifulSoup(source, 'lxml', from_encoding="cp1252")
+    soup = BeautifulSoup(source, 'lxml')
 
     td = soup.find_all('td')
 
