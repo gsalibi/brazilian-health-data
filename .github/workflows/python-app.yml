@@ -29,7 +29,6 @@ jobs:
         pip install -r requirements.txt
     - shell: bash
       run: |
-        pwd;
         ls;
     - name: Run scripts
       env:
