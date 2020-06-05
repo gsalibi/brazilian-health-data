@@ -62,6 +62,7 @@ def insert_csv_into_DB(csv_path: str, disease_id: int):
         database=os.environ['DB_NAME']
     )
     cursor = mydb.cursor()
+    cursor.execute("SET SESSION MAX_EXECUTION_TIME=4000")
     select_sql = 'SELECT LastUpdate FROM Diseases ORDER BY idDisease;'
     insert_sql = 'INSERT INTO Outbreaks (NumberOfCases, FatalCases, DiseaseID, Date, CityID) \
                 VALUES (%s, %s, %s, %s, %s);'
