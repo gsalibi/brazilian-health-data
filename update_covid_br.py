@@ -25,15 +25,15 @@ def get_xlsx_from_url(output_path: str):
     req = requests.get(url)
     url_content = req.content
 
-    xlsx_file = open(output_path, 'wb')
+    xlsx_file = open(os.getcwd() + output_path, 'wb')
     xlsx_file.write(url_content)
     xlsx_file.close()
 
 
 def xlsx_to_csv(xlsx_path:str, output_path: str):
-    wordbook = xlrd.open_workbook(xlsx_path)
+    wordbook = xlrd.open_workbook(os.getcwd() + xlsx_path)
     sheet = wordbook.sheet_by_name('Sheet 1')
-    csv_file = open(output_path, 'w')
+    csv_file = open(os.getcwd() + output_path, 'w')
     writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
 
     for rownum in range(sheet.nrows):
@@ -73,7 +73,7 @@ def insert_csv_into_db(csv_path: str):
     last_date = last_update[4][0].strftime('%Y-%m-%d')
     new_date = last_date
 
-    csv_file = open(csv_path)
+    csv_file = open(os.getcwd() + csv_path)
     lines = csv_file.readlines()[1:]
     reader = csv.reader(lines, delimiter=',')
     
@@ -103,6 +103,6 @@ def insert_csv_into_db(csv_path: str):
     mydb.commit()
 
 
-get_xlsx_from_url('./data/covid_br.xlsx')
-xlsx_to_csv('./data/covid_br.xlsx', 'data/covid_br.csv')
-insert_csv_into_db('./data/covid_br.csv')
+get_xlsx_from_url('/data/covid_br.xlsx')
+xlsx_to_csv('/data/covid_br.xlsx', 'data/covid_br.csv')
+insert_csv_into_db('/data/covid_br.csv')
